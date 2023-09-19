@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="httml,ccs,javascript,scrum">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="refresh" content="10;www.google.com">
+    <meta name="description" content="practica02">
+    <meta name="author" content="Daviv Vega tepetla">
+    <title>practica03</title>
+    <style>
+        img {
+            box-shadow: 5px 10px 10px red, 0 0 5px #0000FF;
+            border-radius: 10% 40% 30%;
+        }
+
+        figure {
+            text-align: center;
+            display: inline-block;
+            width: 300px;
+        }
+        img.redonda{
+            border-radius: 50%;
+        }
+        #elementoArrastrable {
+  width: 50px;
+  height: 50px;
+  background: blue;
+  color: white;
+  padding: 10px;
+  cursor: move;
+}
+
+#zonaSoltado {
+  width: 200px;
+  height: 200px;
+  border: 1px dashed #000;
+}
+    </style>
+</head>
+
+<body>
+    <!--En esta practica se hace una representacion del como se muestran los elementos html siendo
+    que la etiqueta figcaption es un elemento en bloque y la etiqueta img es en in line -->
+    <h1 id="titulo">Random picture</h1>
+
+    <form id="formulario">
+        <fieldset>
+            <legend></legend>
+            <label for="numero">Numero de imagen</label>
+            <input type="text" name="numero" id="num">
+            <input type="submit" value="submit">
+        </fieldset>
+        <div id="contenedor"></div>
+
+        <div id="elementoArrastrable" draggable="true"></div>
+
+
+<div id="zonaSoltado">
+  Arrastra el elemento aquí
+</div>
+    </form>
+    
+    <script>
+        const app = document.getElementById("contenedor")
+        const url = "https://placekitten.com/200/"
+        
+        const picture = (id) => {
+            const source = url + id 
+            console.log("img agregada")
+            return `<figure><img alt="A cat walking on the snow" src="${source}" id="elementoArrastrable" draggable="true"></figure>`
+        }
+
+        const tam = document.getElementById("formulario");
+        tam.addEventListener('submit',e =>{
+            e.preventDefault()
+            const num = document.getElementById("num").value
+            app.innerHTML += picture(num);
+
+        })
+        // app.innerHTML += picture(200)
+
+        // app.innerHTML += picture({nombre:"jane",id:200})
+        // app.innerHTML += picture({nombre:"pedro",id:204})
+        // app.innerHTML += picture({nombre:"jamaica",id:206})
+        // app.innerHTML += picture({nombre:"pedro2",id:208})
+
+        // const lista = document.querySelectorAll("img")
+        // lista.forEach(element => {
+        //     element.addEventListener("click",()=>{
+        //         // element.style.borderRadius = "50%"
+        //         element.classList.toggle("redonda")
+
+        //     });
+        // });
+        
+        // Obtén una referencia a los elementos
+var elementoArrastrable = document.getElementById('elementoArrastrable');
+var zonaSoltado = document.getElementById('zonaSoltado');
+
+// Agrega el evento dragstart al elemento arrastrable
+elementoArrastrable.addEventListener('dragstart', function(event) {
+  // Define el ID del elemento arrastrable como la información a ser transferida durante el arrastre
+  event.dataTransfer.setData('text', event.target.id);
+});
+
+// Agrega el evento dragover a la zona de soltado para permitir el arrastre
+zonaSoltado.addEventListener('dragover', function(event) {
+  // Evita el comportamiento predeterminado para permitir que se deje caer
+  event.preventDefault();
+});
+
+// Agrega el evento drop a la zona de soltado para manejar el proceso de soltar
+zonaSoltado.addEventListener('drop', function(event) {
+  // Evita el comportamiento predeterminado
+  event.preventDefault();
+  // Obtiene el id del elemento arrastrable desde la información transferida durante el arrastre
+  var data = event.dataTransfer.getData('text');
+  // Agrega el elemento arrastrado a la zona de soltado
+  event.target.appendChild(document.getElementById(data));
+});
+    </script>
+</body>
+</html>
