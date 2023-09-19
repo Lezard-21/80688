@@ -1,0 +1,73 @@
+<!DOCTYPE html5>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practica06</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        }
+        form{
+            box-shadow: 10px 10px 15px;
+            /* width: fit-content;
+            height: fit-content;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center; */
+            width: 300px;
+            border-radius: 5px;
+            border: 1px solid lightgray ;
+            padding: 20px;
+        }
+        input{
+            width: 100%;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid lightgray ;
+        }
+        #boton{
+            color: white ;
+            background-color: blue;
+        }
+        label{
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <h1>inicio de Sesión</h1>
+    <form action="" id="formulario">
+        <!-- <fieldset> -->
+            <!-- <legend>formuario</legend> -->
+            <label for="name">Nombre de usuario</label>
+            <input type="text" id="name" name="user">
+            <label for="password">Contraseña</label>
+            <input type="password" maxlength="10" id="password" name="password">
+            <input type="submit" value="iniciar Sesión" name="aceptar" id="boton">
+        <!-- </fieldset> -->
+    </form>
+    <script>
+        const loginform = document.getElementById("formulario")
+        loginform.addEventListener('submit', event =>{
+            event.preventDefault()
+            // console.log(event)
+            let u = document.getElementById("name").value
+            let p = document.getElementById("password").value
+            // alert("usuario: "+u+"contraseña: "+p)
+            alert(`Usuario: ${u} y Contraseña: ${p}`)
+        }) 
+    </script>
+</body>
+</html>
