@@ -78,45 +78,21 @@
             app.innerHTML += picture(num);
 
         })
-        // app.innerHTML += picture(200)
-
-        // app.innerHTML += picture({nombre:"jane",id:200})
-        // app.innerHTML += picture({nombre:"pedro",id:204})
-        // app.innerHTML += picture({nombre:"jamaica",id:206})
-        // app.innerHTML += picture({nombre:"pedro2",id:208})
-
-        // const lista = document.querySelectorAll("img")
-        // lista.forEach(element => {
-        //     element.addEventListener("click",()=>{
-        //         // element.style.borderRadius = "50%"
-        //         element.classList.toggle("redonda")
-
-        //     });
-        // });
         
-        // Obtén una referencia a los elementos
 var elementoArrastrable = document.getElementById('elementoArrastrable');
 var zonaSoltado = document.getElementById('zonaSoltado');
 
-// Agrega el evento dragstart al elemento arrastrable
 elementoArrastrable.addEventListener('dragstart', function(event) {
-  // Define el ID del elemento arrastrable como la información a ser transferida durante el arrastre
   event.dataTransfer.setData('text', event.target.id);
 });
 
-// Agrega el evento dragover a la zona de soltado para permitir el arrastre
 zonaSoltado.addEventListener('dragover', function(event) {
-  // Evita el comportamiento predeterminado para permitir que se deje caer
   event.preventDefault();
 });
 
-// Agrega el evento drop a la zona de soltado para manejar el proceso de soltar
 zonaSoltado.addEventListener('drop', function(event) {
-  // Evita el comportamiento predeterminado
   event.preventDefault();
-  // Obtiene el id del elemento arrastrable desde la información transferida durante el arrastre
   var data = event.dataTransfer.getData('text');
-  // Agrega el elemento arrastrado a la zona de soltado
   event.target.appendChild(document.getElementById(data));
 });
     </script>
