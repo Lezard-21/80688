@@ -1,100 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="keywords" content="httml,ccs,javascript,scrum">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="refresh" content="10;www.google.com">
-    <meta name="description" content="practica02">
-    <meta name="author" content="Daviv Vega tepetla">
-    <title>practica03</title>
-    <style>
-        img {
-            box-shadow: 5px 10px 10px red, 0 0 5px #0000FF;
-            border-radius: 10% 40% 30%;
-        }
+  <meta charset="UTF-8">
+  <meta name="keywords" content="httml,ccs,javascript,scrum">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="refresh" content="10;www.google.com">
+  <meta name="description" content="practica02">
+  <meta name="author" content="Daviv Vega tepetla">
+  <title>practica03</title>
+  <style>
+    img {
+      box-shadow: 5px 10px 10px red, 0 0 5px #0000FF;
+      border-radius: 10% 40% 30%;
+    }
 
-        figure {
-            text-align: center;
-            display: inline-block;
-            width: 300px;
-        }
-        img.redonda{
-            border-radius: 50%;
-        }
-        #elementoArrastrable {
-  width: 50px;
-  height: 50px;
-  background: blue;
-  color: white;
-  padding: 10px;
-  cursor: move;
-}
+    figure {
+      text-align: center;
+      display: inline-block;
+      width: 300px;
+    }
 
-#zonaSoltado {
-  width: 200px;
-  height: 200px;
-  border: 1px dashed #000;
-}
-    </style>
+    img.redonda {
+      border-radius: 50%;
+    }
+
+    .elementoArrastrable {
+      cursor: move;
+    }
+
+    #zonaSoltado {
+      width: 200px;
+      height: 200px;
+      border: 1px dashed #000;
+    }
+  </style>
 </head>
 
 <body>
-    <!--En esta practica se hace una representacion del como se muestran los elementos html siendo
+  <!--En esta practica se hace una representacion del como se muestran los elementos html siendo
     que la etiqueta figcaption es un elemento en bloque y la etiqueta img es en in line -->
-    <h1 id="titulo">Random picture</h1>
+  <h1 id="titulo">Random picture</h1>
 
-    <form id="formulario">
-        <fieldset>
-            <legend></legend>
-            <label for="numero">Numero de imagen</label>
-            <input type="text" name="numero" id="num">
-            <input type="submit" value="submit">
-        </fieldset>
-        <div id="contenedor"></div>
+  <form id="formulario">
+    <fieldset>
+      <legend></legend>
+      <label for="numero">Numero de imagen</label>
+      <input type="text" name="numero" id="num">
+      <input type="submit" value="submit">
+    </fieldset>
+    <div id="contenedor"></div>
 
-        <div id="elementoArrastrable" draggable="true"></div>
+    <div id="elementoArrastrable" draggable="true"></div>
 
 
-<div id="zonaSoltado">
-  Arrastra el elemento aquí
-</div>
-    </form>
+    <div id="zonaSoltado">
+      Arrastra el elemento aquí
+    </div>
+  </form>
+
+  <script>
+    const app = document.getElementById("contenedor")
+    const url = "https://placekitten.com/200/"
+
+    let zonaSoltado = document.getElementById('zonaSoltado');
+    let cam
+
+    const picture = (id) => {
+      const source = url + id
+      return `<figure><img alt="A cat walking on the snow" src="${source}" class="elementoArrastrable" draggable="true"></figure>`
+    }
+
+    const tam = document.getElementById("formulario");
+    tam.addEventListener('submit', e => {
+      e.preventDefault()
+      const num = document.getElementById("num").value
+      app.innerHTML += picture(num);
+
+    })
+
+    var elementoArrastrable = document.getElementById('elementoArrastrable');
     
-    <script>
-        const app = document.getElementById("contenedor")
-        const url = "https://placekitten.com/200/"
-        
-        const picture = (id) => {
-            const source = url + id 
-            console.log("img agregada")
-            return `<figure><img alt="A cat walking on the snow" src="${source}" id="elementoArrastrable" draggable="true"></figure>`
-        }
+    elementoArrastrable.addEventListener('dragstart', function (event) {
+      event.dataTransfer.setData('text', event.target.id);
+    });
 
-        const tam = document.getElementById("formulario");
-        tam.addEventListener('submit',e =>{
-            e.preventDefault()
-            const num = document.getElementById("num").value
-            app.innerHTML += picture(num);
+    zonaSoltado.addEventListener('dragover', function (event) {
+      event.preventDefault();
+    });
 
-        })
-        
-var elementoArrastrable = document.getElementById('elementoArrastrable');
-var zonaSoltado = document.getElementById('zonaSoltado');
-
-elementoArrastrable.addEventListener('dragstart', function(event) {
-  event.dataTransfer.setData('text', event.target.id);
-});
-
-zonaSoltado.addEventListener('dragover', function(event) {
-  event.preventDefault();
-});
-
-zonaSoltado.addEventListener('drop', function(event) {
-  event.preventDefault();
-  var data = event.dataTransfer.getData('text');
-  event.target.appendChild(document.getElementById(data));
-});
-    </script>
+    zonaSoltado.addEventListener('drop', function (event) {
+      event.preventDefault();
+      var data = event.dataTransfer.getData('text');
+      event.target.appendChild();
+    });
+  </script>
 </body>
+
 </html>
