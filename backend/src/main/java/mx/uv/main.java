@@ -2,15 +2,10 @@ package mx.uv;
 
 import static spark.Spark.*;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import java.util.List;
-import java.lang.ProcessBuilder.Redirect.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import mx.uv.Usuario;
 /**
  * Hello world!
  *
@@ -64,6 +59,31 @@ public class main
             return oRespuesta;
          });
 
+         get("/usuario/auth", (req,res)->{
+            Gson gson = new Gson();
+            System.out.println(req.body());
+            JsonElement jelem = gson.fromJson(req.body(), JsonElement.class);
+            JsonObject usuarios = jelem.getAsJsonObject();
+            String nombre = usuarios.get("nombre").getAsString();
+            String password = usuarios.get("password").getAsString();
+            String email = usuarios.get("email").getAsString();
+            for (Usuario usuario : listaUsuarios) {
+                if(email.equals(usuario.getEmail())){      
+                    JsonObject oRespuesta = new JsonObject();
+                    oRespuesta.addProperty("Nombre",nombre);
+                    oRespuesta.addProperty("Password",password);
+                    oRespuesta.addProperty("email",email);
+                    res.type("application/json");
+                    res.status(200);
+                    return oRespuesta;
+                }
+            }
+            res.type("application/json");
+            res.status(404);
+            return new JsonObject();
+
+         });
+
         get("/usuario",(req,res)->{
             System.out.println(req.body());
             res.status(200);
@@ -99,7 +119,6 @@ public class main
             return "Usuario no encontrado";
          });
          
-        
 
         put("/usuario/:email", (req,res)->{
             String reqEmail = req.params(":email");

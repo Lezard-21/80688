@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useState } from 'react';
-import { Box, Button, TextField } from '@mui/material';
+import { Box, Button, TextField, Alert} from '@mui/material';
 
 function Formulario() {
     const [cargando, setCargando] = useState(false)
@@ -14,34 +14,55 @@ function Formulario() {
         setCargando(true)
         try {
             console.log(datosFormulario)
-            const res = await hacerPeticion();
+            const res = await hacerPeticionRegistrar();
             setCargando(false)
-            if (datosFormulario.nombre == res.nombre) {
-                console.log("El usuario es correcto");
-            }
             // console.log(res.data);
         } catch (error) {
             setCargando(false)
             console.log(error)
         }
     }
-    const hacerPeticion = async ()=>{
-        try {
-            const res = await axios.post('http://localhost:4567/usuario',datosFormulario);
-            // const res = await axios.post('http://localhost:4567/tipo-usuario',{params: datosFormulario});
-            // const res = await axios.get('http://localhost:4567/tipo-usuario',datosFormulario);
-            console.log(res.data)
-            return res.data;
-        } catch (error) {
-            throw error;
-        }
-    }
+
     const cambiosFormulario = (e) => {
         const {name,value} = e.target
         setDatosFormulario({
             ...datosFormulario,
             [name]: value
         })
+    }
+    const validar = async()=>{
+        setCargando(true)
+        try {
+            console.log(datosFormulario)
+            const res = await hacerPeticionVerificar();
+            setCargando(false)            
+            // console.log(res.data);
+        } catch (error) {
+            setCargando(false)
+            console.log(error)
+        }
+    }
+
+    const hacerPeticionVerificar = async ()=>{
+        try {
+            const res = await axios.get('http://localhost:4567/usuario/auth',datosFormulario);
+            console.log(res.status)
+            console.log(res.data)
+            return res.data;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    const hacerPeticionRegistrar = async ()=>{
+        try {
+            const res = await axios.post('http://localhost:4567/usuario',datosFormulario);
+            console.log(res.status)
+            console.log(res.data)
+            return res.data;
+        } catch (error) {
+            throw error;
+        }
     }
     return (
         <>
@@ -54,10 +75,13 @@ function Formulario() {
                 <TextField label="email:" variant='outlined' type='email' id='email' name='email' placeholder='email@gmail.com' onChange={cambiosFormulario} value={datosFormulario.email} fullWidth ></TextField>
             </Box>
             <Box m={5}>
-                <TextField label="Contraseña:" variant='outlined' type='password' disabled={cargando} id='password' name='password' placeholder='contraseña' onChange={cambiosFormulario} value={datosFormulario.password} fullWidth></TextField>
+                <TextField label="Contraseña:" variant='outlined' type='password' id='password' name='password' placeholder='contraseña' onChange={cambiosFormulario} value={datosFormulario.password} fullWidth></TextField>
             </Box>
             <Box m={5}>
                 <Button variant='contained' type="submit" color='primary' disabled={cargando} fullWidth>Iniciar sesion</Button>
+            </Box>
+            <Box m={5}>
+                <Button variant='contained' onClick={validar} color='primary' disabled={cargando} fullWidth>Registrar</Button>
             </Box>
         </form>
         </>

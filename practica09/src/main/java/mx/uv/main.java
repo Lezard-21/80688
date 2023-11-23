@@ -2,6 +2,8 @@ package mx.uv;
 
 import static spark.Spark.*;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonElement;
 /**
  * Hello world!
  *
@@ -28,25 +30,44 @@ public class main
         get("/hola", (req, res) -> "<h1>Hello wold</h1>");
         get("/adios", (req, res) -> "<h1>Adios Mundo</h1>");
         get("/fin", (req, res) -> "<h1>El fin se acerca</h1>");
-        get("/alumno", (req, res) -> "{'alumno':'jhon', 'matricula':'s0001','carrera':'TECO'}");
+        get("/alumno", (req, res) -> "{\"alumno\":\"jhon\", \"matricula\":\"s0001\",\"carrera\":\"TECO\"}");
         get("/say/*/to/*", (request, response) -> {
             return "Number of splat parameters: " + request.splat().length;
         });
 
-        post("alumno",(req, res)->{
+        post("/alumno",(req, res)->{
                 System.out.println(req.contentLength());
                 System.out.println(req.contentType());
                 System.out.println(req.contextPath());
                 return "hola"+req.queryParams("nombre");
         });
+        get("/tipo-usuario",(req,res)->{
+            System.out.println(req.queryParams("email") + " " + req.queryParams("password"));
+            System.out.println(req.body());
+            res.status(200);
+            res.type("application/json");
+            JsonObject oRespuesta = new JsonObject();
+            oRespuesta.addProperty("Nombre","David");
+            oRespuesta.addProperty("Password","david");
+            oRespuesta.addProperty("email",req.queryParams("email"));
+            return oRespuesta;
+        });
+
         post("/tipo-usuario",(req,res)->{
             System.out.println(req.queryParams("email") + " " + req.queryParams("password"));
             System.out.println(req.body());
             res.status(200);
+            res.type("application/json");
             JsonObject oRespuesta = new JsonObject();
-            oRespuesta.addProperty("msj","Hola");
+            oRespuesta.addProperty("Nombre","David");
+            oRespuesta.addProperty("Password","david");
             oRespuesta.addProperty("email",req.queryParams("email"));
             return oRespuesta;
         });
+        // post("/json", (req,res)->{
+        //     JsonParser parser = new JsonParser();
+        //     JsonElement arbol = parser.parse(req.body());
+        //     return arbol.getAsJsonObject().get("nombre").getAsString();
+        // });
     }
 }
