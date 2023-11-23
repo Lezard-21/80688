@@ -6,6 +6,7 @@ import com.google.gson.JsonParser;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import java.util.List;
+import java.lang.ProcessBuilder.Redirect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -44,12 +45,12 @@ public class main
         });
 
         post("/usuario",(req,res)-> {
-            Map<String, String[]> usuarios = new HashMap<>();
-            usuarios = req.queryMap().toMap();
-
-            String nombre = usuarios.get("nombre")[0];
-            String password = usuarios.get("password")[0];
-            String email = usuarios.get("email")[0];
+            Gson gson = new Gson();
+            JsonElement jelem = gson.fromJson(req.body(), JsonElement.class);
+            JsonObject usuarios = jelem.getAsJsonObject();
+            String nombre = usuarios.get("nombre").getAsString();
+            String password = usuarios.get("password").getAsString();
+            String email = usuarios.get("email").getAsString();
             Usuario newUser = new Usuario(nombre, password, email);
             listaUsuarios.add(newUser);
             JsonObject oRespuesta = new JsonObject();
@@ -106,14 +107,13 @@ public class main
             Usuario newUser = null;
             for(Usuario u: listaUsuarios){
                 if(u.getEmail().equals(reqEmail)){
-                    Map<String, String[]> usuarios = new HashMap<>();
-                    usuarios = req.queryMap().toMap();
-
-                    String nombre = usuarios.get("nombre")[0];
-                    String password = usuarios.get("password")[0];
-                    String email = usuarios.get("email")[0];
+                    Gson gson = new Gson();
+                    JsonElement jelem = gson.fromJson(req.body(), JsonElement.class);
+                    JsonObject usuarios = jelem.getAsJsonObject();
+                    String nombre = usuarios.get("nombre").getAsString();
+                    String password = usuarios.get("password").getAsString();
+                    String email = usuarios.get("email").getAsString();
                     newUser = new Usuario(nombre, password, email);
-
                     removeUsuario = u;
                 }
             }
