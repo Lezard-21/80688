@@ -32,4 +32,10 @@ public class Usuario {
     public String getId(){
         return this.id;
     }
+
+    @Override
+    public String toString() {
+        return "Usuario [id=" + id + ", nombre=" + nombre + ", password=" + password + "]";
+    }
+    
 }

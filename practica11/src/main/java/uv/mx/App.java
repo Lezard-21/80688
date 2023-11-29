@@ -1,8 +1,6 @@
 package uv.mx;
 
 import static spark.Spark.*;
-import java.util.List;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.google.gson.Gson;
@@ -23,17 +21,20 @@ public class App
         get("/usuario", (req,res)->{
             res.type("application/json");
             // return gson.toJson(usuarios.values());
-            return gson.toJson(DAO.getAllProducts());
+            return gson.toJson(DAO.getAllUsuarios());
+        });
+        get("/usuario/byId", (req,res)->{
+            String id = req.queryParams("id");
+            res.type("application/json");
+            // return gson.toJson(usuarios.values());
+            return gson.toJson(DAO.GetUsuariosFromId(id));
         });
         post("/usuario", (req,res)->{
-            System.out.println(req.body());
             Usuario user = gson.fromJson(req.body(), Usuario.class);
-            System.out.println("n:"+user.getNombre());
-            System.out.println("p:"+user.getPassword());
             String id = UUID.randomUUID().toString();
             user.setId(id);
             // usuarios.put(id, user);
-            DAO.createProduct(user);
+            DAO.createUsuario(user);
             System.out.println("i:"+user.getId());
             // res.type("application/json");
             res.type("application/json");
@@ -42,5 +43,27 @@ public class App
 
          });
 
+         delete("/usuario/:id", (req, res) -> {
+            // String id = req.queryParams("id");
+            String id = req.params(":id");
+            // String id = gson.fromJson(req.body(), String.class);
+            Usuario u = DAO.deleteUsuario(id);
+            res.type("application/json");
+            if (u!=null) {
+                res.status(200);
+                return gson.toJson(u);                
+            }else{
+                res.status(404);
+                JsonObject r = new JsonObject();
+                r.addProperty("error", "Error al eliminar el usuario");
+                return r;
+            }
+            // return gson.toJson(DAO.GetUsuariosFromId(id));
+         });
+         patch("/usuario", (req, res) -> {
+            Usuario user = gson.fromJson(req.body(), Usuario.class);
+            res.type("application/json");
+            return gson.toJson( DAO.modifyUsuario(user));
+         });
     }
 }
