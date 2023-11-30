@@ -4,7 +4,6 @@ import static spark.Spark.*;
 import java.util.HashMap;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import java.util.UUID;
 /**
@@ -17,7 +16,7 @@ public class App
     static Gson gson = new Gson();
     public static void main( String[] args )
     {
-        port(80);
+        port(getHerokuAssignedPort());
         get("/usuario", (req,res)->{
             res.type("application/json");
             // return gson.toJson(usuarios.values());
@@ -65,5 +64,12 @@ public class App
             res.type("application/json");
             return gson.toJson( DAO.modifyUsuario(user));
          });
+    }
+    static int getHerokuAssignedPort() {
+        ProcessBuilder processBuilder = new ProcessBuilder();
+        if (processBuilder.environment().get("PORT") != null) {
+            return Integer.parseInt(processBuilder.environment().get("PORT"));
+        }
+        return 4567; //return default port if heroku-port isn't set (i.e. on localhost)
     }
 }
